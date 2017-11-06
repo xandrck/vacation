@@ -19,11 +19,11 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <h1>Users:</h1>
-	      {
-	        this.state.persons.map((person) =>
-            <Person name={person['name']} days={person['days']}/>
-          )
-	      }
+        <div>
+	        {this.state.persons.map((person) => {
+		        return <Person name={person.name} days={person.days}/>
+	        })}
+        </div>
 	      <h1>Calendar:</h1>
 
       </div>
