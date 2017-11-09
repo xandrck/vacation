@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import logo from '../images/logo.svg';
 import './App.css';
-import Person from './Person/Person';
+import Person from '../components/Person/Person';
 
 class App extends Component {
   state = {
@@ -20,11 +20,11 @@ class App extends Component {
         </header>
         <h1>Users:</h1>
         <div>
-	        {this.state.persons.map((person) => {
-		        return <Person name={person.name} days={person.days}/>
-	        })}
+          {this.state.persons.map((person) => {
+            return <Person name={person.name} days={person.days}/>
+          })}
         </div>
-	      <h1>Calendar:</h1>
+        <h1>Calendar:</h1>
 
       </div>
     );
