@@ -1,16 +1,16 @@
 import React from 'react';
-import Person from '../Persons/Person/Person';
+import Person from './Person/Person';
 
 const persons = (props) => {
-	return (
-		<div>
-			{
-				// props.persons.map((person) => {
-				// 	return <Person name={person.name}/>
-				// })
-			}
-		</div>
-	)
+  return (
+    <div>
+      {
+        props.persons.map((person, index) => {
+          return <Person key={index} name={person.name} days={person.days}/>
+        })
+      }
+  </div>
+  )
 };
 
 export default persons;
