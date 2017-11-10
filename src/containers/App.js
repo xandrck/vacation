@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from '../images/logo.svg';
 import './App.css';
 import Persons from '../components/Persons/Persons';
+import Vacations from '../components/Vacations/Vacations';
 import Request from 'superagent'
 
 class App extends Component {
@@ -9,17 +10,20 @@ class App extends Component {
     super();
 
     this.state = {
-      persons: []
+      persons: [],
+      vacations: []
     };
 
-    this.setStateHandler = this.setStateHandler.bind(this);
+    this.setStatePersons = this.setStatePersons.bind(this);
+    this.setStateVacations = this.setStateVacations.bind(this);
   };
 
   componentDidMount() {
-    this.setStateHandler();
+    this.setStatePersons();
+    this.setStateVacations(1);
   }
 
-  setStateHandler(){
+  setStatePersons(){
     const url = 'http://localhost:3001/v1/users';
     Request.get(url).set('accept', 'json').then((response) => {
       this.setState({
@@ -28,8 +32,18 @@ class App extends Component {
     })
   }
 
+  setStateVacations(personId){
+    const url = 'http://localhost:3001/v1/users/' + personId;
+    Request.get(url).set('accept', 'json').then((response) => {
+      this.setState({
+        vacations: response.body
+      })
+    })
+  }
+
   render() {
     let persons = this.state.persons;
+    let vacations = this.state.vacations;
 
     return (
       <div className="App">
@@ -42,6 +56,9 @@ class App extends Component {
           <Persons persons={persons}/>
         </div>
         <h1>Calendar:</h1>
+        <div>
+          <Vacations vacations={vacations}/>
+        </div>
 
       </div>
     );

@@ -5,8 +5,8 @@ const persons = (props) => {
   return (
     <div>
       {
-        props.persons.map((person, index) => {
-          return <Person key={index} name={person.name} days={person.days}/>
+        props.persons.map((person) => {
+          return <Person key={person.id} name={person.name} days={person.days}/>
         })
       }
   </div>
