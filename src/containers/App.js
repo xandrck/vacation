@@ -20,26 +20,26 @@ class App extends Component {
 
   componentDidMount() {
     this.setStatePersons();
-    this.setStateVacations(1);
   }
 
-  setStatePersons(){
+  setStatePersons = () => {
     const url = 'http://localhost:3001/v1/users';
     Request.get(url).set('accept', 'json').then((response) => {
       this.setState({
         persons: response.body
       })
     })
-  }
+  };
 
-  setStateVacations(personId){
+  setStateVacations = (element) => {
+    let personId = element.target.id;
     const url = 'http://localhost:3001/v1/users/' + personId;
     Request.get(url).set('accept', 'json').then((response) => {
       this.setState({
         vacations: response.body
       })
     })
-  }
+  };
 
   render() {
     let persons = this.state.persons;
@@ -53,7 +53,7 @@ class App extends Component {
         </header>
         <h1>Users:</h1>
         <div>
-          <Persons persons={persons}/>
+          <Persons persons={persons} clicked={this.setStateVacations}/>
         </div>
         <h1>Calendar:</h1>
         <div>

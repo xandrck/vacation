@@ -6,7 +6,7 @@ const persons = (props) => {
     <div>
       {
         props.persons.map((person) => {
-          return <Person key={person.id} name={person.name} days={person.days}/>
+          return <Person key={person.id} name={person.name} days={person.days} clicked={props.clicked} id={person.id}/>
         })
       }
   </div>
