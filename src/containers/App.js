@@ -77,6 +77,32 @@ class App extends Component {
   render() {
     let persons = this.state.persons;
     let vacations = this.state.vacations;
+    let datePicker = null;
+
+    if (this.state.currentPerson) {
+      datePicker = (
+        <div className="vacation-picker">
+          Start Date:
+          <DatePicker
+            selected={this.state.startDate}
+            selectsStart
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            onChange={this.handleChangeStart}
+          />
+
+          End Date:
+          <DatePicker
+            selected={this.state.endDate}
+            selectsEnd
+            startDate={this.state.startDate}
+            endDate={this.state.endDate}
+            onChange={this.handleChangeEnd}
+          />
+          <Button bsStyle="primary" onClick={this.addVacation}>Add Vacation</Button>
+        </div>
+      )
+    }
 
     return (
       <div className="App">
@@ -84,33 +110,20 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <div className="users col-md-2">
-          <h1>Users:</h1>
-          <div>
+        <div className="col-md-2">
+          <div className="users">
+            <h1>Users:</h1>
             <Persons persons={persons} clicked={this.setStateVacations}/>
           </div>
         </div>
 
-        <div className="calendar col-md-10">
+        <div className="col-md-10 calendar">
           <h1>Calendar:</h1>
-          <div>
-            <Button bsStyle="primary" onClick={this.addVacation}>Add Vacation</Button>
-            <DatePicker
-              selected={this.state.startDate}
-              selectsStart
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              onChange={this.handleChangeStart}
-            />
-
-            <DatePicker
-              selected={this.state.endDate}
-              selectsEnd
-              startDate={this.state.startDate}
-              endDate={this.state.endDate}
-              onChange={this.handleChangeEnd}
-            />
+          <div className="vacations col-md-6">
             <Vacations vacations={vacations}/>
+          </div>
+          <div className="col-md-6">
+            {datePicker}
           </div>
         </div>
       </div>

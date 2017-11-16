@@ -2,6 +2,25 @@
   text-align: center;
 }
 
+.App .users {
+  text-align: left;
+}
+
+.App .users h1,
+.App .calendar h1 {
+  padding-bottom: 20px;
+}
+
+.App .vacations {
+  text-align: left;
+  display: inline-block;
+}
+
+.App .vacation-picker {
+  text-align: left;
+  display: inline-block;
+}
+
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 80px;
