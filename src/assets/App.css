@@ -16,6 +16,11 @@
   display: inline-block;
 }
 
+.App .vacations table th,
+.App .vacations table td {
+  text-align: center;
+}
+
 .App .vacation-picker {
   text-align: left;
   display: inline-block;
