@@ -19,13 +19,15 @@ class App extends Component {
       vacations: [],
       startDate: moment(),
       endDate: moment(),
-      currentPerson: null
+      currentPerson: {}
     };
 
     this.setStatePersons = this.setStatePersons.bind(this);
     this.setStateVacations = this.setStateVacations.bind(this);
+    this.addVacation = this.addVacation.bind(this);
     this.handleChangeStart = this.handleChangeStart.bind(this);
     this.handleChangeEnd = this.handleChangeEnd.bind(this);
+    this.availableVacationDays = this.availableVacationDays.bind(this);
   };
 
   componentDidMount() {
@@ -47,19 +49,34 @@ class App extends Component {
     Request.get(url).set('accept', 'json').then((response) => {
       this.setState({
         vacations: response.body,
-        currentPerson: personId
+        currentPerson: { id: personId, days: this.availableVacationDays(personId) }
       })
-    })
+    });
   };
 
   addVacation() {
     let personId = this.state.currentPerson;
     let startDate = this.state.startDate.format("DD-MM-YYYY");
     let endDate = this.state.endDate.format("DD-MM-YYYY");
-    const url = 'http://localhost:3001/v1/vacations?user_id=' + personId + '&start_date=' + startDate + '&end_date=' +endDate;
-    //TODO: add error if startDate == endDate, return error for failed response
-    Request.post(url).set('accept', 'json').then(() => {})
-    //TODO: update vacation list in DOM
+
+    if (endDate > startDate) {
+      const url = 'http://localhost:3001/v1/vacations?user_id=' + personId + '&start_date=' + startDate + '&end_date=' + endDate;
+      // TODO: add error if startDate == endDate, return error for failed response
+      Request.post(url).set('accept', 'json').then(() => {})
+      // TODO: update vacation list in DOM
+    }
+  };
+
+  availableVacationDays(personId) {
+    let days = null;
+
+    this.state.persons.find(function(value){
+      if (value.id === parseInt(personId)) {
+        days = value.days
+      }
+    });
+
+    return days;
   };
 
   handleChangeStart(date) {
@@ -78,8 +95,9 @@ class App extends Component {
     let persons = this.state.persons;
     let vacations = this.state.vacations;
     let datePicker = null;
+    let daysLeft = null;
 
-    if (this.state.currentPerson) {
+    if (this.state.currentPerson.id !== undefined) {
       datePicker = (
         <div className="vacation-picker">
           Start Date:
@@ -101,6 +119,10 @@ class App extends Component {
           />
           <Button bsStyle="primary" onClick={this.addVacation}>Add Vacation</Button>
         </div>
+      );
+
+      daysLeft = (
+        <h4>{this.state.currentPerson.days} days left</h4>
       )
     }
 
@@ -119,6 +141,7 @@ class App extends Component {
 
         <div className="col-md-10 calendar">
           <h1>Calendar:</h1>
+          {daysLeft}
           <div className="vacations col-md-6">
             <Vacations vacations={vacations}/>
           </div>

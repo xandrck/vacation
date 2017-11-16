@@ -4,7 +4,7 @@ const person = (props) => {
   return (
     <div>
       <p id={props.id} onClick={props.clicked}>
-        {props.name} - {props.days} days left
+        {props.name}
       </p>
     </div>
   )

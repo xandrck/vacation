@@ -6,9 +6,18 @@
   text-align: left;
 }
 
+.App .users p {
+  display: inline-block;
+  cursor: pointer;
+}
+
 .App .users h1,
 .App .calendar h1 {
   padding-bottom: 20px;
+}
+
+.App .calendar h4 {
+  text-align: center;
 }
 
 .App .vacations {
