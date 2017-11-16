@@ -2,14 +2,22 @@ import React from 'react';
 import Vacation from './Vacation/Vacation';
 
 const vacations = (props) => {
+  let tableHeaders = null;
+
+  if (props.vacations.length > 0) {
+    tableHeaders = (
+      <tr>
+        <th className="col-md-5">Begins:</th>
+        <th className="col-md-5">Ends:</th>
+        <th className="col-md-2">Days:</th>
+      </tr>
+    )
+  }
+
   return (
     <table>
       <thead>
-        <tr>
-          <th className="col-md-5">Begins:</th>
-          <th className="col-md-5">Ends:</th>
-          <th className="col-md-2">Days:</th>
-        </tr>
+        {tableHeaders}
       </thead>
       <tbody>
         {
