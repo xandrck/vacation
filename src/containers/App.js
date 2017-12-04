@@ -46,24 +46,34 @@ class App extends Component {
   setStateVacations(element) {
     let personId = element.target.id;
     const url = 'http://localhost:3001/v1/users/' + personId;
-    Request.get(url).set('accept', 'json').then((response) => {
-      this.setState({
-        vacations: response.body,
-        currentPerson: { id: personId, days: this.availableVacationDays(personId) }
-      })
+    Request
+      .get(url)
+      .set('accept', 'json')
+      .then((response) => {
+        this.setState({
+          vacations: response.body,
+          currentPerson: { id: personId, days: this.availableVacationDays(personId) }
+        })
     });
   };
 
   addVacation() {
-    let personId = this.state.currentPerson;
-    let startDate = this.state.startDate.format("DD-MM-YYYY");
-    let endDate = this.state.endDate.format("DD-MM-YYYY");
+    let personId = this.state.currentPerson.id;
+    let startDate = this.state.startDate;
+    let endDate = this.state.endDate;
 
-    if (endDate > startDate) {
-      const url = 'http://localhost:3001/v1/vacations?user_id=' + personId + '&start_date=' + startDate + '&end_date=' + endDate;
+    if (endDate.format("MM-DD-YYYY") > startDate.format("MM-DD-YYYY")) {
+      const url = 'http://localhost:3001/v1/vacations';
       // TODO: add error if startDate == endDate, return error for failed response
-      Request.post(url).set('accept', 'json').then(() => {})
-      // TODO: update vacation list in DOM
+      Request
+        .post(url)
+        .query({ user_id: personId, start_date: startDate, end_date: endDate })
+        .set('accept', 'json')
+        .then((response) => {
+          console.log(response);
+      });
+    } else {
+      console.log('wrong date')
     }
   };
 
@@ -100,27 +110,32 @@ class App extends Component {
     if (this.state.currentPerson.id !== undefined) {
       datePicker = (
         <div className="vacation-picker">
-          Start Date:
-          <DatePicker
-            selected={this.state.startDate}
-            selectsStart
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            onChange={this.handleChangeStart}
-          />
+          <h4>Add new vacation:</h4>
+          <div>
+            Start Date:
+            <DatePicker
+              selected={this.state.startDate}
+              selectsStart
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onChange={this.handleChangeStart}
+            />
 
-          End Date:
-          <DatePicker
-            selected={this.state.endDate}
-            selectsEnd
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            onChange={this.handleChangeEnd}
-          />
-          <Button bsStyle="primary" onClick={this.addVacation}>Add Vacation</Button>
+            End Date:
+            <DatePicker
+              selected={this.state.endDate}
+              selectsEnd
+              startDate={this.state.startDate}
+              endDate={this.state.endDate}
+              onChange={this.handleChangeEnd}
+            />
+            <Button bsStyle="primary" onClick={this.addVacation}>Add Vacation</Button>
+          </div>
         </div>
-      );
+      )
+    }
 
+    if (this.state.currentPerson.days !== undefined) {
       daysLeft = (
         <h4>{this.state.currentPerson.days} days left</h4>
       )

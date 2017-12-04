@@ -20,6 +20,10 @@
   text-align: center;
 }
 
+.App .vacation-picker .react-datepicker-wrapper {
+  margin: 5px 0;
+}
+
 .App .vacations {
   text-align: left;
   display: inline-block;
