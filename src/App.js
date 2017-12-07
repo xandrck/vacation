@@ -144,10 +144,7 @@ class App extends Component {
     return (
       <Layout>
         <div className="col-md-2">
-          <div className="users">
-            <h1>Users:</h1>
-            <Persons persons={persons} clicked={this.setStateVacations}/>
-          </div>
+          <Persons persons={persons} clicked={this.setStateVacations}/>
         </div>
 
         <div className="col-md-10 calendar">

@@ -1,0 +1,13 @@
+.persons {
+  text-align: left;
+}
+
+.persons p {
+  display: inline-block;
+  cursor: pointer;
+}
+
+.persons h1,
+.calendar h1 {
+  padding-bottom: 20px;
+}
