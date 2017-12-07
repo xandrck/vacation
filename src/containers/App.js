@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import logo from '../images/logo.svg';
-import '../assets/App.css';
+
+import Layout from '../components/Layout/Layout';
 import Persons from '../components/Persons/Persons';
 import Vacations from '../components/Vacations/Vacations';
 import Request from 'superagent'
-
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
+
 import 'react-datepicker/dist/react-datepicker.css';
+import '../assets/css/App.css';
 
 class App extends Component {
   constructor() {
@@ -64,7 +65,6 @@ class App extends Component {
 
     if (endDate.format("MM-DD-YYYY") > startDate.format("MM-DD-YYYY")) {
       const url = 'http://localhost:3001/v1/vacations';
-      // TODO: add error if startDate == endDate, return error for failed response
       Request
         .post(url)
         .query({ user_id: personId, start_date: startDate, end_date: endDate })
@@ -142,11 +142,7 @@ class App extends Component {
     }
 
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
+      <Layout>
         <div className="col-md-2">
           <div className="users">
             <h1>Users:</h1>
@@ -164,7 +160,7 @@ class App extends Component {
             {datePicker}
           </div>
         </div>
-      </div>
+      </Layout>
     );
   }
 }
