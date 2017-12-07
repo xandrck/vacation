@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
 
-import Layout from '../components/Layout/Layout';
-import Persons from '../components/Persons/Persons';
-import Vacations from '../components/Vacations/Vacations';
+import Layout from './components/Layout/Layout';
+import Persons from './components/Persons/Persons';
+import Vacations from './components/Vacations/Vacations';
 import Request from 'superagent'
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import '../assets/css/App.css';
+import './assets/css/App.css';
 
 class App extends Component {
   constructor() {
