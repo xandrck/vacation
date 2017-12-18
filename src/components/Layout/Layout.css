@@ -1,51 +1,60 @@
-.content {
+.app {
     text-align: center;
 }
 
-.content .calendar h4 {
-    text-align: center;
-}
-
-.content .vacation-picker .react-datepicker-wrapper {
-    margin: 5px 0;
-}
-
-.content .vacations {
-    text-align: left;
-    display: inline-block;
-}
-
-.content .vacations table th,
-.content .vacations table td {
-    text-align: center;
-}
-
-.content .vacation-picker {
-    text-align: left;
-    display: inline-block;
-}
-
-.content .logo {
+.app .logo {
     animation: logo-spin infinite 20s linear;
     height: 80px;
 }
 
-.content .header {
+.app .header {
     background-color: #222;
     height: 150px;
     padding: 20px;
     color: white;
 }
 
-.content .title {
+.app .title {
     font-size: 1.5em;
 }
 
-.content .intro {
+.app .intro {
     font-size: large;
 }
 
 @keyframes logo-spin {
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
+}
+
+.app .flash {
+
+}
+
+.app .content {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.app .content .calendar h4 {
+    text-align: center;
+}
+
+.app .content .vacation-picker .react-datepicker-wrapper {
+    margin: 5px 0;
+}
+
+.app .content .vacations {
+    text-align: left;
+    display: inline-block;
+}
+
+.app .content .vacations table th,
+.app .content .vacations table td {
+    text-align: center;
+}
+
+.app .content .vacation-picker {
+    text-align: left;
+    display: inline-block;
 }

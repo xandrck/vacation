@@ -4,7 +4,7 @@ import { Button } from 'react-bootstrap';
 import Layout from './components/Layout/Layout';
 import Persons from './components/Persons/Persons';
 import Vacations from './components/Vacations/Vacations';
-import Request from 'superagent'
+import request from 'superagent'
 import DatePicker from 'react-datepicker';
 import moment from 'moment';
 
@@ -24,39 +24,58 @@ class App extends Component {
     };
 
     this.setStatePersons = this.setStatePersons.bind(this);
+    this.getPersons = this.getPersons.bind(this);
     this.setStateVacations = this.setStateVacations.bind(this);
+    this.setCurrentPerson = this.setCurrentPerson.bind(this);
+    this.getVacations = this.getVacations.bind(this);
     this.addVacation = this.addVacation.bind(this);
     this.handleChangeStart = this.handleChangeStart.bind(this);
     this.handleChangeEnd = this.handleChangeEnd.bind(this);
     this.availableVacationDays = this.availableVacationDays.bind(this);
+    this.updatePersonDays = this.updatePersonDays.bind(this);
   };
 
   componentDidMount() {
-    this.setStatePersons();
+    this.getPersons();
   }
 
-  setStatePersons() {
-    const url = 'http://localhost:3001/v1/users';
-    Request.get(url).set('accept', 'json').then((response) => {
-      this.setState({
-        persons: response.body
-      })
+  setStatePersons(persons) {
+    this.setState({
+      persons: persons
     })
   };
 
-  setStateVacations(element) {
+  setStateVacations(vacations) {
+    this.setState({
+      vacations: vacations
+    })
+  };
+
+  setCurrentPerson(personId) {
+    this.setState({
+      currentPerson: { id: personId, days: this.availableVacationDays(personId) }
+    })
+  }
+
+  getPersons() {
+    const url = 'http://localhost:3001/v1/users';
+    request
+      .get(url)
+      .then((response) => {
+        this.setStatePersons(response.body);
+      })
+  };
+
+  getVacations(element) {
     let personId = element.target.id;
     const url = 'http://localhost:3001/v1/users/' + personId;
-    Request
+    request
       .get(url)
-      .set('accept', 'json')
       .then((response) => {
-        this.setState({
-          vacations: response.body,
-          currentPerson: { id: personId, days: this.availableVacationDays(personId) }
-        })
-    });
-  };
+        this.setStateVacations(response.body);
+        this.setCurrentPerson(personId);
+      });
+  }
 
   addVacation() {
     let personId = this.state.currentPerson.id;
@@ -65,23 +84,45 @@ class App extends Component {
 
     if (endDate.format("MM-DD-YYYY") > startDate.format("MM-DD-YYYY")) {
       const url = 'http://localhost:3001/v1/vacations';
-      Request
+      request
         .post(url)
-        .query({ user_id: personId, start_date: startDate, end_date: endDate })
-        .set('accept', 'json')
+        .query({ user_id: personId, start_date: startDate.format("DD-MM-YYYY"), end_date: endDate.format("DD-MM-YYYY") })
         .then((response) => {
-          console.log(response);
-      });
+          let vacations = this.state.vacations.concat(response.body);
+          this.setStateVacations(vacations);
+          this.updatePersonDays(personId, response.body['days'])
+        });
     } else {
       console.log('wrong date')
     }
   };
 
+  updatePersonDays(personId, vacationDays) {
+    let days = null;
+    let currentPerson = this.state.currentPerson;
+    let person = null;
+    let persons = this.state.persons;
+
+    persons.forEach(function(value, index){
+      if (value.id === parseInt(personId, 10)) {
+        days = value.days - vacationDays;
+        currentPerson = Object.assign({}, currentPerson, {days: days});
+        person = Object.assign({}, persons[1], {days: days});
+        persons[index] = person;
+      }
+    });
+
+    this.setState({
+      currentPerson: currentPerson,
+      persons: persons
+    })
+  }
+
   availableVacationDays(personId) {
     let days = null;
 
-    this.state.persons.find(function(value){
-      if (value.id === parseInt(personId)) {
+    this.state.persons.forEach(function(value){
+      if (value.id === parseInt(personId, 10)) {
         days = value.days
       }
     });
@@ -144,7 +185,7 @@ class App extends Component {
     return (
       <Layout>
         <div className="col-md-2">
-          <Persons persons={persons} clicked={this.setStateVacations}/>
+          <Persons persons={persons} clicked={this.getVacations}/>
         </div>
 
         <div className="col-md-10 calendar">
